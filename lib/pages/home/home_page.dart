@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/models/user_model.dart';
+import 'package:shop_shoes/providers/auth_provider.dart';
+import 'package:shop_shoes/providers/product_provider.dart';
 
 import 'package:shop_shoes/theme.dart';
 import 'package:shop_shoes/widgets/product_card.dart';
@@ -10,6 +14,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = context.read<AuthProvider>();
+
+    UserModel? user = authProvider.user;
+
+    // untuk ambil data dari backend
+    ProductProvider productProvider = context.read<ProductProvider>();
+
     Widget header() {
       return Container(
         margin: EdgeInsets.only(
@@ -24,14 +35,14 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hallo, Pravasta',
+                    'Hallo, ${user!.name}',
                     style: primaryTextStyle.copyWith(
                       fontSize: 26,
                       fontWeight: semiBold,
                     ),
                   ),
                   Text(
-                    '@fitrayana',
+                    '@${user.username}',
                     style: subtitleTextStyle.copyWith(
                       fontSize: 18,
                     ),
@@ -42,11 +53,11 @@ class HomePage extends StatelessWidget {
             Container(
               width: 56,
               height: 56,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage(
-                    'assets/image_profile.png',
+                  image: NetworkImage(
+                    '${user.profilePhotoUrl}',
                   ),
                 ),
               ),
@@ -154,11 +165,13 @@ class HomePage extends StatelessWidget {
             children: [
               SizedBox(width: defaultMargin),
               Row(
-                children: const [
-                  ProductCard(),
-                  ProductCard(),
-                  ProductCard(),
-                ],
+                children: productProvider.products
+                    .map(
+                      (product) => ProductCard(
+                        product: product,
+                      ),
+                    )
+                    .toList(),
               ),
             ],
           ),
@@ -187,13 +200,13 @@ class HomePage extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.only(top: 16),
         child: Column(
-          children: const [
-            ProductsTile(),
-            ProductsTile(),
-            ProductsTile(),
-            ProductsTile(),
-            ProductsTile(),
-          ],
+          children: productProvider.products
+              .map(
+                (product) => ProductsTile(
+                  product: product,
+                ),
+              )
+              .toList(),
         ),
       );
     }

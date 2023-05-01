@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/models/product_model.dart';
+import 'package:shop_shoes/providers/wishlist_provider.dart';
 import '../theme.dart';
 
 class WishlistCard extends StatelessWidget {
-  const WishlistCard({super.key});
+  const WishlistCard({super.key, required this.product});
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
+    // Wishlist provider
+    WishListProvider wishListProvider = context.watch<WishListProvider>();
+
     return Container(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.only(
@@ -22,8 +30,8 @@ class WishlistCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(
-              'assets/image_shoes.png',
+            child: Image.network(
+              '${product.galleries[0].url}',
               width: 80,
             ),
           ),
@@ -33,14 +41,14 @@ class WishlistCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Terrex Urban Low',
+                  product.name,
                   style: primaryTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
                   ),
                 ),
                 Text(
-                  '\$143,98',
+                  '\$${product.price}',
                   style: priceTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: reguler,
@@ -49,9 +57,14 @@ class WishlistCard extends StatelessWidget {
               ],
             ),
           ),
-          Image.asset(
-            'assets/button_wishlist_blue.png',
-            width: 44,
+          GestureDetector(
+            onTap: () {
+              wishListProvider.setProduct(product);
+            },
+            child: Image.asset(
+              'assets/button_wishlist_blue.png',
+              width: 44,
+            ),
           ),
         ],
       ),

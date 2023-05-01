@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/models/user_model.dart';
+import 'package:shop_shoes/providers/auth_provider.dart';
 
 import '../../theme.dart';
 
@@ -7,6 +10,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = context.read<AuthProvider>();
+    UserModel? user = authProvider.user;
+
     Widget header() {
       return AppBar(
         backgroundColor: backgroundColor1,
@@ -18,9 +24,10 @@ class ProfilePage extends StatelessWidget {
             child: Row(
               children: [
                 ClipOval(
-                  child: Image.asset(
-                    'assets/image_profile.png',
+                  child: Image.network(
+                    '${user!.profilePhotoUrl}',
                     width: 74,
+                    fit: BoxFit.fill,
                   ),
                 ),
                 const SizedBox(width: 18),
@@ -29,14 +36,14 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hallo, Pravasta',
+                        'Hallo, ${user.name}',
                         style: primaryTextStyle.copyWith(
                           fontSize: 26,
                           fontWeight: semiBold,
                         ),
                       ),
                       Text(
-                        '@pravasta',
+                        '@${user.username}',
                         style: subtitleTextStyle.copyWith(
                           fontSize: 18,
                         ),

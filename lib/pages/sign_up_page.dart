@@ -1,11 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/providers/auth_provider.dart';
 import 'package:shop_shoes/theme.dart';
+import 'package:shop_shoes/widgets/loading_button.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController nameController = TextEditingController();
+
+  final TextEditingController usernameController = TextEditingController();
+
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passswordController = TextEditingController();
+
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    usernameController.dispose();
+    emailController.dispose();
+    passswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Memanggil authProvider
+    AuthProvider authProvider = context.read<AuthProvider>();
+
+    handleSignUp() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await authProvider.register(
+        nameController.text,
+        usernameController.text,
+        emailController.text,
+        passswordController.text,
+      )) {
+        if (!mounted) {
+          return;
+        }
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      } else {
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              'Gagal Register',
+              style: primaryTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: semiBold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return Container(
         margin: const EdgeInsets.only(
@@ -66,6 +135,7 @@ class SignUpPage extends StatelessWidget {
                     const SizedBox(width: 18),
                     Expanded(
                       child: TextFormField(
+                        controller: nameController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Full Name',
@@ -115,6 +185,7 @@ class SignUpPage extends StatelessWidget {
                     const SizedBox(width: 18),
                     Expanded(
                       child: TextFormField(
+                        controller: usernameController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Username',
@@ -164,6 +235,7 @@ class SignUpPage extends StatelessWidget {
                     const SizedBox(width: 18),
                     Expanded(
                       child: TextFormField(
+                        controller: emailController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Email Address',
@@ -213,6 +285,7 @@ class SignUpPage extends StatelessWidget {
                     const SizedBox(width: 18),
                     Expanded(
                       child: TextFormField(
+                        controller: passswordController,
                         obscureText: true,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
@@ -236,7 +309,7 @@ class SignUpPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.only(top: 32),
         child: TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/home'),
+          onPressed: handleSignUp,
           style: TextButton.styleFrom(
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
@@ -297,7 +370,7 @@ class SignUpPage extends StatelessWidget {
               userNameInput(),
               emailInput(),
               passwordInput(),
-              signUpButton(),
+              isLoading ? const LoadingButton() : signUpButton(),
               const Spacer(),
               footer(),
             ],

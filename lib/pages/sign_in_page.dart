@@ -1,11 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_shoes/theme.dart';
+import 'package:shop_shoes/widgets/loading_button.dart';
 
-class SignInPage extends StatelessWidget {
+import '../providers/auth_provider.dart';
+
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  final TextEditingController emailController =
+      TextEditingController(text: 'fitrayanaf15@gmail.com');
+
+  final TextEditingController passswordController =
+      TextEditingController(text: 'Janganganggu12');
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passswordController.dispose();
+    super.dispose();
+  }
+
+  bool isLoading = false;
+  @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = context.read<AuthProvider>();
+
+    handleSignIn() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await authProvider.login(
+        emailController.text,
+        passswordController.text,
+      )) {
+        if (!mounted) {
+          return;
+        }
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      } else {
+        if (!mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              'Gagal Login',
+              style: primaryTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: semiBold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return Container(
         margin: const EdgeInsets.only(
@@ -66,6 +128,7 @@ class SignInPage extends StatelessWidget {
                     const SizedBox(width: 18),
                     Expanded(
                       child: TextFormField(
+                        controller: emailController,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
                           hintText: 'Your Email Address',
@@ -115,6 +178,7 @@ class SignInPage extends StatelessWidget {
                     const SizedBox(width: 18),
                     Expanded(
                       child: TextFormField(
+                        controller: passswordController,
                         obscureText: true,
                         style: primaryTextStyle,
                         decoration: InputDecoration.collapsed(
@@ -138,7 +202,7 @@ class SignInPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.only(top: 32),
         child: TextButton(
-          onPressed: () => Navigator.pushNamed(context, '/home'),
+          onPressed: handleSignIn,
           style: TextButton.styleFrom(
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
@@ -197,7 +261,7 @@ class SignInPage extends StatelessWidget {
               header(),
               emailInput(),
               passwordInput(),
-              signInButton(),
+              isLoading ? const LoadingButton() : signInButton(),
               const Spacer(),
               footer(),
             ],

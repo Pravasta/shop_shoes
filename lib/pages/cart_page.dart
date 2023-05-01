@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/providers/cart_provider.dart';
 import '../theme.dart';
 import '../widgets/cart_card.dart';
 
@@ -7,6 +10,8 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = context.watch<CartProvider>();
+
     PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: backgroundColor1,
@@ -79,9 +84,13 @@ class CartPage extends StatelessWidget {
     Widget content() {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        children: const [
-          CartCard(),
-        ],
+        children: cartProvider.cart
+            .map(
+              (cart) => CartCard(
+                cartModel: cart,
+              ),
+            )
+            .toList(),
       );
     }
 
@@ -104,7 +113,13 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$287,96',
+                    NumberFormat.currency(
+                      locale: 'id',
+                      symbol: '\$',
+                      decimalDigits: 0,
+                    ).format(
+                      cartProvider.totalPrice(),
+                    ),
                     style: priceTextStyle.copyWith(
                       fontSize: 20,
                       fontWeight: semiBold,
@@ -156,8 +171,9 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor3,
       appBar: header(),
-      body: content(),
-      bottomNavigationBar: customButtonNav(),
+      body: cartProvider.cart.isEmpty ? emptyCard() : content(),
+      bottomNavigationBar:
+          cartProvider.cart.isEmpty ? const SizedBox() : customButtonNav(),
     );
   }
 }

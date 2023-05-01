@@ -1,37 +1,115 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/models/product_model.dart';
+import 'package:shop_shoes/providers/cart_provider.dart';
+import 'package:shop_shoes/providers/wishlist_provider.dart';
 import '../theme.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
+  const ProductPage({
+    super.key,
+    required this.productModel,
+  });
+
+  final ProductModel productModel;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
-  List images = [
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png'
-  ];
-
   List familiarShoes = [
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png',
-    'assets/image_shoes.png'
+    'assets/image_shoes2.png',
+    'assets/image_shoes3.png',
+    'assets/image_shoes4.png',
+    'assets/image_shoes5.png',
+    'assets/image_shoes6.png',
+    'assets/image_shoes7.png',
+    'assets/image_shoes8.png',
   ];
 
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    WishListProvider wishListProvider = context.watch<WishListProvider>();
+    CartProvider cartProvider = context.watch<CartProvider>();
+
+    Future<void> showSuccesDialog() async {
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width - (2 * defaultMargin),
+            child: AlertDialog(
+              backgroundColor: backgroundColor3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                    Image.asset(
+                      'assets/icon_success.png',
+                      width: 154,
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      'Hurray :)',
+                      style: primaryTextStyle.copyWith(
+                        fontSize: 22,
+                        fontWeight: semiBold,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      'Item added succesfully',
+                      style: secondaryTextStyle.copyWith(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 22),
+                    SizedBox(
+                      width: 164,
+                      height: 54,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            )),
+                        onPressed: () => Navigator.pushNamed(context, '/cart'),
+                        child: Text(
+                          'View my Cart',
+                          style: primaryTextStyle.copyWith(
+                            fontSize: 20,
+                            fontWeight: medium,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     Widget indicator(int index) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 3),
@@ -82,10 +160,10 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
           CarouselSlider(
-            items: images
+            items: widget.productModel.galleries
                 .map(
-                  (image) => Image.asset(
-                    image,
+                  (image) => Image.network(
+                    '${image.url}',
                     width: MediaQuery.of(context).size.width,
                     height: 330,
                     fit: BoxFit.cover,
@@ -104,7 +182,7 @@ class _ProductPageState extends State<ProductPage> {
           const SizedBox(height: 22),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: images.map(
+            children: widget.productModel.galleries.map(
               (e) {
                 index++;
                 return indicator(index);
@@ -146,7 +224,7 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'TERREX URBAN LOW',
+                          widget.productModel.name,
                           style: primaryTextStyle.copyWith(
                             fontSize: 22,
                             fontWeight: semiBold,
@@ -161,9 +239,40 @@ class _ProductPageState extends State<ProductPage> {
                       ],
                     ),
                   ),
-                  Image.asset(
-                    'assets/button_wishlist.png',
-                    width: 56,
+                  GestureDetector(
+                    onTap: () {
+                      wishListProvider.setProduct(widget.productModel);
+
+                      if (wishListProvider.isWishlist(widget.productModel)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(seconds: 1),
+                            backgroundColor: secondaryColor,
+                            content: const Text(
+                              'Product berhasil ditambahkan ke WishList',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(seconds: 1),
+                            backgroundColor: alertColor,
+                            content: const Text(
+                              'Product berhasil dihapus dart WishList',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: Image.asset(
+                      wishListProvider.isWishlist(widget.productModel)
+                          ? 'assets/button_wishlist_blue.png'
+                          : 'assets/button_wishlist.png',
+                      width: 56,
+                    ),
                   ),
                 ],
               ),
@@ -191,7 +300,7 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                   Text(
-                    '\$143,98',
+                    '\$${widget.productModel.price}',
                     style: priceTextStyle.copyWith(
                       fontSize: 20,
                       fontWeight: semiBold,
@@ -220,7 +329,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   const SizedBox(height: 14),
                   Text(
-                    'Unpaved trails and mixed surfaces are easy when you have the traction and support you need Casual enough for the daily commute.',
+                    widget.productModel.description,
                     style: subtitleTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: light,
@@ -300,7 +409,10 @@ class _ProductPageState extends State<ProductPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             )),
-                        onPressed: () {},
+                        onPressed: () {
+                          cartProvider.addCart(widget.productModel);
+                          showSuccesDialog();
+                        },
                         child: Text(
                           'Add to Cart',
                           style: primaryTextStyle.copyWith(

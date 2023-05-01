@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:shop_shoes/models/product_model.dart';
+import 'package:shop_shoes/pages/product_page.dart';
 import 'package:shop_shoes/theme.dart';
 
 class ProductsTile extends StatelessWidget {
-  const ProductsTile({super.key});
+  const ProductsTile({super.key, required this.product});
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, '/product'),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductPage(productModel: product),
+          //membawa product model
+        ),
+      ),
       child: Container(
         margin: EdgeInsets.only(
           left: defaultMargin,
@@ -18,8 +28,8 @@ class ProductsTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'assets/image_shoes.png',
+              child: Image.network(
+                '${product.galleries[0].url}',
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,
@@ -31,22 +41,23 @@ class ProductsTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Football',
+                    '${product.category.name}',
                     style: secondaryTextStyle.copyWith(
                       fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Predator 20.3 Film Ground',
+                    product.name,
                     style: primaryTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: semiBold,
                     ),
+                    maxLines: 1,
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    '\$68,47',
+                    '\$${product.price}',
                     style: priceTextStyle.copyWith(
                       fontWeight: medium,
                       fontSize: 16,

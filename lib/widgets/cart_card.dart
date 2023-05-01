@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_shoes/models/cart_model.dart';
+import 'package:shop_shoes/providers/cart_provider.dart';
 import '../theme.dart';
 
 class CartCard extends StatelessWidget {
-  const CartCard({super.key});
+  const CartCard({super.key, required this.cartModel});
+
+  final CartModel cartModel;
 
   @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider = context.watch<CartProvider>();
+
     return Container(
       margin: EdgeInsets.only(top: defaultMargin),
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
@@ -22,8 +29,9 @@ class CartCard extends StatelessWidget {
                 height: 70,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/image_shoes.png'),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        '${cartModel.productModel?.galleries[0].url}'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -34,14 +42,14 @@ class CartCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Terrex Urban Low',
+                      cartModel.productModel!.name,
                       style: primaryTextStyle.copyWith(
                         fontWeight: semiBold,
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      '\$143,98',
+                      '\$${cartModel.productModel!.price}',
                       style: priceTextStyle.copyWith(
                         fontSize: 18,
                       ),
@@ -51,43 +59,58 @@ class CartCard extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Image.asset(
-                    'assets/button_add.png',
-                    width: 18,
+                  GestureDetector(
+                    onTap: () {
+                      cartProvider.addQuantity(cartModel.id);
+                    },
+                    child: Image.asset(
+                      'assets/button_add.png',
+                      width: 18,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '4',
+                    cartModel.quantity.toString(),
                     style: primaryTextStyle.copyWith(
                       fontWeight: semiBold,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Image.asset(
-                    'assets/button_min.png',
-                    width: 18,
+                  GestureDetector(
+                    onTap: () {
+                      cartProvider.reduceQuantity(cartModel.id);
+                    },
+                    child: Image.asset(
+                      'assets/button_min.png',
+                      width: 18,
+                    ),
                   ),
                 ],
               ),
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/icon_remove.png',
-                width: 12,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'Remove',
-                style: alertTextStyle.copyWith(
-                  fontSize: 16,
-                  fontWeight: light,
+          GestureDetector(
+            onTap: () {
+              cartProvider.removeCart(cartModel.id);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/icon_remove.png',
+                  width: 12,
                 ),
-              ),
-            ],
+                const SizedBox(width: 10),
+                Text(
+                  'Remove',
+                  style: alertTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: light,
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
