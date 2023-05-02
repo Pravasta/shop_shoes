@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:shop_shoes/services/transaction_service.dart';
+import '../../services/transaction_service.dart';
 
 import '../models/cart_model.dart';
 

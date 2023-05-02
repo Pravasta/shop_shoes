@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:shop_shoes/models/user_model.dart';
-import 'package:shop_shoes/services/auth_services.dart';
+import '../../models/user_model.dart';
+import '../../services/auth_services.dart';
 
 class AuthProvider with ChangeNotifier {
   UserModel? _user;

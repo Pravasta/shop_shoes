@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:shop_shoes/models/user_model.dart';
+import '../../models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {

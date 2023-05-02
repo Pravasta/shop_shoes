@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_shoes/models/product_model.dart';
+import '../../models/product_model.dart';
 
 class ProductService {
   String baseUrl = 'https://shamo-backend.buildwithangga.id/api';

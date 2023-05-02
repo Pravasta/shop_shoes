@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/providers/cart_provider.dart';
+import '../../providers/cart_provider.dart';
 import '../theme.dart';
 import '../widgets/cart_card.dart';
 

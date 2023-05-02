@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
+import '../../models/message_model.dart';
+import '../../models/product_model.dart';
+import '../../pages/detail_chat_page.dart';
 import '../theme.dart';
 
 class ChatTile extends StatelessWidget {
-  const ChatTile({super.key});
+  const ChatTile({super.key, required this.messageModel});
+
+  final MessageModel messageModel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, '/detail-chat'),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DetailChatPage(
+            productModel: UninitilizedProductModel(),
+          ),
+        ),
+      ),
       child: Container(
         margin: const EdgeInsets.only(top: 35),
         child: Column(
@@ -32,7 +44,7 @@ class ChatTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Good night, Thie item is on processed by store',
+                        '${messageModel.message}',
                         overflow: TextOverflow.ellipsis,
                         style: secondaryTextStyle.copyWith(
                           fontWeight: light,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_shoes/models/cart_model.dart';
+import '../../models/cart_model.dart';
 import '../theme.dart';
 
 class CheckoutCard extends StatelessWidget {
@@ -28,7 +28,7 @@ class CheckoutCard extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: NetworkImage(
-                  '${cartModel.productModel!.galleries[0].url}',
+                  '${cartModel.productModel!.galleries![0].url}',
                 ),
               ),
             ),
@@ -39,7 +39,7 @@ class CheckoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  cartModel.productModel!.name,
+                  cartModel.productModel!.name!,
                   style: primaryTextStyle.copyWith(
                     fontSize: 18,
                     fontWeight: semiBold,

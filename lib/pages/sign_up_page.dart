@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/providers/auth_provider.dart';
-import 'package:shop_shoes/theme.dart';
-import 'package:shop_shoes/widgets/loading_button.dart';
+import '../../providers/auth_provider.dart';
+import '../../theme.dart';
+import '../../widgets/loading_button.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

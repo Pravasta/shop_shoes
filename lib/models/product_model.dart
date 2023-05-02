@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:shop_shoes/models/categori_model.dart';
-import 'package:shop_shoes/models/galerry_model.dart';
+import '../../models/categori_model.dart';
+import '../../models/galerry_model.dart';
 
 ProductModel productModelFromJson(String str) =>
     ProductModel.fromJson(json.decode(str));
@@ -9,26 +9,26 @@ ProductModel productModelFromJson(String str) =>
 String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
-  int id;
-  String name;
-  int price;
-  String description;
+  int? id;
+  String? name;
+  int? price;
+  String? description;
   dynamic tags;
-  DateTime createdAt;
-  DateTime updatedAt;
-  CategoryModel category;
-  List<GaleryModel> galleries;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  CategoryModel? category;
+  List<GaleryModel>? galleries;
 
   ProductModel({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.description,
+    this.id,
+    this.name,
+    this.price,
+    this.description,
     this.tags,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.category,
-    required this.galleries,
+    this.createdAt,
+    this.updatedAt,
+    this.category,
+    this.galleries,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -50,9 +50,12 @@ class ProductModel {
         "price": price,
         "description": description,
         "tags": tags,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "category": category.toJson(),
-        "galleries": List<dynamic>.from(galleries.map((x) => x.toJson())),
+        "created_at": createdAt!.toIso8601String(),
+        "updated_at": updatedAt!.toIso8601String(),
+        "category": category!.toJson(),
+        "galleries": List<dynamic>.from(galleries!.map((x) => x.toJson())),
       };
 }
+
+// Membuat turunan dari product model untuk fitur live chat
+class UninitilizedProductModel extends ProductModel {}

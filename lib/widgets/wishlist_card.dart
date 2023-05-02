@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/models/product_model.dart';
-import 'package:shop_shoes/providers/wishlist_provider.dart';
+import '../../models/product_model.dart';
+import '../../providers/wishlist_provider.dart';
 import '../theme.dart';
 
 class WishlistCard extends StatelessWidget {
@@ -31,7 +31,7 @@ class WishlistCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              '${product.galleries[0].url}',
+              '${product.galleries![0].url}',
               width: 80,
             ),
           ),
@@ -41,7 +41,7 @@ class WishlistCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.name,
+                  product.name!,
                   style: primaryTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,

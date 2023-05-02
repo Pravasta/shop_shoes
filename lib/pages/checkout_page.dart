@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/providers/auth_provider.dart';
-import 'package:shop_shoes/providers/cart_provider.dart';
-import 'package:shop_shoes/providers/transaction_provider.dart';
-import 'package:shop_shoes/widgets/checkout_card.dart';
-import 'package:shop_shoes/widgets/loading_button.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/transaction_provider.dart';
+import '../../widgets/checkout_card.dart';
+import '../../widgets/loading_button.dart';
 import '../theme.dart';
 
 class CheckoutPage extends StatefulWidget {

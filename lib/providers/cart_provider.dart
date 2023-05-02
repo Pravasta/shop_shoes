@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_shoes/models/cart_model.dart';
-import 'package:shop_shoes/models/product_model.dart';
+import '../../models/cart_model.dart';
+import '../../models/product_model.dart';
 
 class CartProvider with ChangeNotifier {
   List<CartModel> _cart = [];
@@ -66,7 +66,7 @@ class CartProvider with ChangeNotifier {
   totalPrice() {
     double total = 0;
     for (var item in _cart) {
-      total += (item.quantity * item.productModel!.price);
+      total += (item.quantity * item.productModel!.price!);
     }
     return total;
   }

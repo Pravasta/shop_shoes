@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/providers/product_provider.dart';
-import 'package:shop_shoes/theme.dart';
+import '../../providers/product_provider.dart';
+import '../../theme.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

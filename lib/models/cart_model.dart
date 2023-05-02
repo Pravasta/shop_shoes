@@ -1,4 +1,4 @@
-import 'package:shop_shoes/models/product_model.dart';
+import '../../models/product_model.dart';
 
 class CartModel {
   int? id;
@@ -23,6 +23,6 @@ class CartModel {
 
   // membuat total harga dari barang
   getTotalPrice() {
-    return productModel!.price * quantity;
+    return productModel!.price! * quantity;
   }
 }

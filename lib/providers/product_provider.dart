@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:shop_shoes/models/product_model.dart';
-import 'package:shop_shoes/services/product_service.dart';
+import '../../models/product_model.dart';
+import '../../services/product_service.dart';
 
 class ProductProvider with ChangeNotifier {
   List<ProductModel> _products = [];

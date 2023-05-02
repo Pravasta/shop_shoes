@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "7175010006",
+    "project_id": "shop-shoes-1907b",
+    "storage_bucket": "shop-shoes-1907b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7175010006:android:b180c0c600344812fdfb77",
+        "android_client_info": {
+          "package_name": "com.fitrayanaf11.shop_shoes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7175010006-fega2s4nuvieo457n1p3reic4k94qnlr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdHbk82GdOxz9jYboEpPGmROF3aM-_7v0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7175010006-fega2s4nuvieo457n1p3reic4k94qnlr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

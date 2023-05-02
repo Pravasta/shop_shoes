@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/providers/wishlist_provider.dart';
-import 'package:shop_shoes/widgets/wishlist_card.dart';
+import '../../providers/wishlist_provider.dart';
+import '../../widgets/wishlist_card.dart';
+import '../../providers/page_provider.dart';
 import '../../theme.dart';
 
 class WishListPage extends StatelessWidget {
@@ -10,6 +11,7 @@ class WishListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WishListProvider wishListProvider = context.watch<WishListProvider>();
+    PageProvider pageProvider = context.watch<PageProvider>();
 
     Widget header() {
       return AppBar(
@@ -68,7 +70,9 @@ class WishListPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    pageProvider.currIndex = 0;
+                  },
                   child: Text(
                     'Explore Store',
                     style: primaryTextStyle.copyWith(

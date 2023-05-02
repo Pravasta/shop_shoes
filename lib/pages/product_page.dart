@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/models/product_model.dart';
-import 'package:shop_shoes/providers/cart_provider.dart';
-import 'package:shop_shoes/providers/wishlist_provider.dart';
+import '../../models/product_model.dart';
+import '../../pages/detail_chat_page.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/wishlist_provider.dart';
 import '../theme.dart';
 
 class ProductPage extends StatefulWidget {
@@ -87,11 +88,15 @@ class _ProductPageState extends State<ProductPage> {
                       height: 54,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                            backgroundColor: primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            )),
-                        onPressed: () => Navigator.pushNamed(context, '/cart'),
+                          backgroundColor: primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/cart');
+                        },
                         child: Text(
                           'View my Cart',
                           style: primaryTextStyle.copyWith(
@@ -160,7 +165,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
           CarouselSlider(
-            items: widget.productModel.galleries
+            items: widget.productModel.galleries!
                 .map(
                   (image) => Image.network(
                     '${image.url}',
@@ -182,7 +187,7 @@ class _ProductPageState extends State<ProductPage> {
           const SizedBox(height: 22),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: widget.productModel.galleries.map(
+            children: widget.productModel.galleries!.map(
               (e) {
                 index++;
                 return indicator(index);
@@ -224,7 +229,7 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.productModel.name,
+                          widget.productModel.name!,
                           style: primaryTextStyle.copyWith(
                             fontSize: 22,
                             fontWeight: semiBold,
@@ -329,7 +334,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   const SizedBox(height: 14),
                   Text(
-                    widget.productModel.description,
+                    widget.productModel.description!,
                     style: subtitleTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: light,
@@ -388,13 +393,24 @@ class _ProductPageState extends State<ProductPage> {
               ),
               child: Row(
                 children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/button_chat.png',
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetailChatPage(productModel: widget.productModel),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 64,
+                      height: 64,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/button_chat.png',
+                          ),
                         ),
                       ),
                     ),

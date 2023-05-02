@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_shoes/models/product_model.dart';
-import 'package:shop_shoes/theme.dart';
+import '../../models/product_model.dart';
+import '../../theme.dart';
 
 import '../pages/product_page.dart';
 
@@ -31,7 +31,7 @@ class ProductCard extends StatelessWidget {
           children: [
             const SizedBox(height: 32),
             Image.network(
-              "${product.galleries[0].url}",
+              "${product.galleries![0].url}",
               width: MediaQuery.of(context).size.width / 1.8,
               height: 150,
               fit: BoxFit.cover,
@@ -43,12 +43,12 @@ class ProductCard extends StatelessWidget {
                 children: [
                   const SizedBox(height: 12),
                   Text(
-                    '${product.category.name}',
+                    '${product.category!.name}',
                     style: secondaryTextStyle.copyWith(fontSize: 18),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    product.name,
+                    product.name!,
                     style: blackTextStyle.copyWith(
                       fontWeight: semiBold,
                       fontSize: 22,

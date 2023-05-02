@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_shoes/models/user_model.dart';
-import 'package:shop_shoes/providers/auth_provider.dart';
-import 'package:shop_shoes/providers/product_provider.dart';
+import '../../models/user_model.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/product_provider.dart';
 
-import 'package:shop_shoes/theme.dart';
-import 'package:shop_shoes/widgets/product_card.dart';
+import '../../theme.dart';
+import '../../widgets/product_card.dart';
 
 import '../../widgets/product_tile.dart';
 

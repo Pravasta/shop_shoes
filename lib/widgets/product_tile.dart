@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_shoes/models/product_model.dart';
-import 'package:shop_shoes/pages/product_page.dart';
-import 'package:shop_shoes/theme.dart';
+import '../../models/product_model.dart';
+import '../../pages/product_page.dart';
+import '../../theme.dart';
 
 class ProductsTile extends StatelessWidget {
   const ProductsTile({super.key, required this.product});
@@ -29,7 +29,7 @@ class ProductsTile extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.network(
-                '${product.galleries[0].url}',
+                '${product.galleries![0].url}',
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,
@@ -41,14 +41,14 @@ class ProductsTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${product.category.name}',
+                    '${product.category!.name}',
                     style: secondaryTextStyle.copyWith(
                       fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    product.name,
+                    product.name!,
                     style: primaryTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: semiBold,
